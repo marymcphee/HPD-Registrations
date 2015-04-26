@@ -14,6 +14,7 @@ def parse_contact(filepath):
                 print 'Error with Row length: ' + row[0]
     return contact_list
 
+# string (filepath) -> [{}]
 def parse_registrations(filepath):
     registrations = []
     with open(filepath, 'r') as f:
@@ -27,7 +28,22 @@ def parse_registrations(filepath):
                 print 'Error with Row length: ' + row[0]
     return registrations
 
+# usage: lastname="Landlord", firstname="Evil"
+# lastname is required
+def simple_owner_lookup(contacts, **kwargs):
+    if 'firstname' in kwargs:
+        def find_match(row):
+            if (row['FirstName'] == kwargs['firstname'] and row['LastName'] == kwargs['lastname']):
+                return True
+            else:
+                return False
+    else:
+        def find_match(row):
+            if (row['LastName'] == kwargs['lastname']):
+                return True
+            else:
+                return False
+    return [x for x in contacts if find_match(x)]
 
 if __name__ == "__main__":
-    print len(parse_contact('data/RegistrationContact20150331.txt'))    
-
+    print simple_owner_lookup(parse_contact('data/RegistrationContact20150331.txt'), lastname="ALIHAJDARAJ")
