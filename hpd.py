@@ -14,10 +14,20 @@ def parse_contact(filepath):
                 print 'Error with Row length: ' + row[0]
     return contact_list
 
-def say_hi():
-    return 'hello ziggy'
+def parse_registrations(filepath):
+    registrations = []
+    with open(filepath, 'r') as f:
+        reg_reader = csv.reader(f, delimiter='|')
+        reg_reader.next()
+        for row in reg_reader:
+            if len(row) == 16:
+                row_as_dict = {'RegistrationID': row[0], 'BuildingID': row[1], 'BoroID': row[2], 'Boro': row[3], 'HouseNumber': row[4], 'LowHouseNumber': row[5], 'HighHouseNumber': row[6], 'StreetName': row[7], 'StreetCode': row[8], 'Zip': row[9], 'Block': row[10], 'Lot': row[11], 'BIN': row[12], 'CommunityBoard': row[13], 'LastRegistrationDate': row[14], 'RegistrationEndDate': row[15]}
+                registrations.append(row_as_dict)
+            else:
+                print 'Error with Row length: ' + row[0]
+    return registrations
 
 
 if __name__ == "__main__":
-    print parse_contact('data/RegistrationContact20150331.txt')[0:2]
+    print len(parse_contact('data/RegistrationContact20150331.txt'))    
 
